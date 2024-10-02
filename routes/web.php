@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{any}', function () {
-    return redirect('/admin');
+
+Route::fallback(function (){
+    return redirect('/admin/login');
 });
