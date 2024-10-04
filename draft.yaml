@@ -1,5 +1,48 @@
 models:
-  # ...
+  Batch:
+    name: string:400
+    start_date: nullable date
+    primary_fermentation: nullable date
+    secondary_fermentation: nullable date
+    aging: nullable date
+    notes: nullable longtext
+    abv: nullable float
+    sg: nullable float
+    brix: nullable float
+    baume: nullable float
+    abw: nullable float
+    label: nullable string
+    tags: nullable string
+    status: enum:pending,successful,failed,primary_fermentation,secondary_fermentation,aging
+    relationships:
+      belongsTo: User, Recipe
+      hasMany: Tag
+
+  Recipe:
+    name: string:400
+    notes: nullable longtext
+    target_gravity: nullable float
+    target_volume: nullable float
+    rating: nullable tinytext
+    sharable: boolean default:true
+    creator_id: foreignId User
+    owner_id: foreignId User
+    relationships:
+      belongsToMany: Batch, Tag
+
+  Tag:
+    name: string:255
+    relationships:
+      belongsToMany: Recipe, Batch
+
+  Equipment:
+    name: string:255
+    notes: nullable longtext
+    price: nullable float
+    image: nullable string
+    location: nullable string
+    relationships:
+      belongsTo: User
 
 controllers:
   # ...

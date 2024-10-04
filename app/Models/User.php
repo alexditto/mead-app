@@ -3,24 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+/**
+ * @property string $role
+ */
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,5 +38,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function batches(): HasMany
+    {
+        return $this->hasMany(Batch::class);
+    }
+
+    public function equipment(): HasMany
+    {
+        return $this->hasMany(Equipment::class);
+    }
+
+    public function created_recipes(): HasMany
+    {
+        return $this->hasMany(Recipe::class, 'creator_id', 'id');
+    }
+
+    public function owned_recipes(): HasMany
+    {
+        return $this->hasMany(Recipe::class, 'owner_id', 'id');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if($this->role == "admin"){
+            return true;
+        }
+        return false;
     }
 }

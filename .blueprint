@@ -1,2 +1,22 @@
+created:
+    - database/factories/BatchFactory.php
+    - database/factories/RecipeFactory.php
+    - database/factories/TagFactory.php
+    - database/factories/EquipmentFactory.php
+    - database/migrations/2024_10_04_044908_create_batches_table.php
+    - database/migrations/2024_10_04_044909_create_recipes_table.php
+    - database/migrations/2024_10_04_044910_create_tags_table.php
+    - database/migrations/2024_10_04_044911_create_equipment_table.php
+    - database/migrations/2024_10_04_044912_create_batch_recipe_table.php
+    - database/migrations/2024_10_04_044913_create_recipe_tag_table.php
+    - database/migrations/2024_10_04_044914_create_batch_tag_table.php
+    - app/Models/Batch.php
+    - app/Models/Recipe.php
+    - app/Models/Tag.php
+    - app/Models/Equipment.php
 models:
-    User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
+    User: {  }
+    Batch: { name: 'string:400', start_date: 'nullable date', primary_fermentation: 'nullable date', secondary_fermentation: 'nullable date', aging: 'nullable date', notes: 'nullable longtext', abv: 'nullable float', sg: 'nullable float', brix: 'nullable float', baume: 'nullable float', abw: 'nullable float', label: 'nullable string', tags: 'nullable string', status: 'enum:pending,successful,failed,primary_fermentation,secondary_fermentation,aging', relationships: { belongsTo: 'User, Recipe', hasMany: Tag } }
+    Recipe: { name: 'string:400', notes: 'nullable longtext', target_gravity: 'nullable float', target_volume: 'nullable float', rating: 'nullable tinytext', sharable: 'boolean default:true', creator_id: 'foreignId User', owner_id: 'foreignId User', relationships: { belongsToMany: 'Batch, Tag' } }
+    Tag: { name: 'string:255', relationships: { belongsToMany: 'Recipe, Batch' } }
+    Equipment: { name: 'string:255', notes: 'nullable longtext', price: 'nullable float', image: 'nullable string', location: 'nullable string', relationships: { belongsTo: User } }
