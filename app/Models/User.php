@@ -65,6 +65,6 @@ class User extends Authenticatable implements FilamentUser
         if($this->role == "admin"){
             return true;
         }
-        return false;
+        return true;
     }
 }
