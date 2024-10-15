@@ -20,3 +20,5 @@ yarn-error.log
 /.vscode
 /.zed
 draft.yaml
+/resources/js/src/node_modules
+/resources/js/src/.expo
